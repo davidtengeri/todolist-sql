@@ -55,16 +55,17 @@ const updateItemState = (id, done, onReady) => {
   });
 }
 
-const saveItem = (title, onReady) => {
+const saveItem = ({ title, description }, onReady) => {
   db.transaction((tx) => {
     tx.executeSql(
       `insert into items (
         done,
-        title
+        title,
+        description
       ) values (
-        0, ?
+        0, ?, ?
       )`,
-      [title],
+      [title, description],
       (_, { insertId }) => onReady(insertId)
     );
   });

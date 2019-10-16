@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from "react-redux";
-import { Container, Content, Text, Form, Item, Label, Input, Button } from 'native-base';
+import { Container, Content, Text, Textarea, Form, Item, Label, Input, Button } from 'native-base';
 import { actions } from './todoSlice';
 import db from '../db';
 
@@ -13,6 +13,7 @@ class AddScreen extends React.Component {
     super(props);
     this.state = {
       title: '',
+      description: '',
     }
   }
 
@@ -27,13 +28,22 @@ class AddScreen extends React.Component {
               <Label>Title</Label>
               <Input onChangeText={(value) => this.setState({ title: value })} />
             </Item>
+            <Textarea
+              rowSpan={5}
+              bordered
+              placeholder="Description"
+              onChangeText={(value) => this.setState({ description: value })}
+            />
           </Form>
           <Button
             style={{ marginTop: 10, justifyContent: 'center' }}
             onPress={() => {
-              const { title } = this.state;
+              const { title, description } = this.state;
               if (title !== '') {
-                db.saveItem(title, () => {
+                db.saveItem({
+                  title,
+                  description,
+                }, () => {
                   navigation.goBack();
                 });
               }

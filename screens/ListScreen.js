@@ -4,6 +4,7 @@ import { actions } from './todoSlice';
 import { connect } from 'react-redux';
 import { NavigationEvents } from 'react-navigation';
 import db from '../db';
+import { TouchableOpacity } from 'react-native';
 
 class ListScreen extends React.Component {
   static navigationOptions = {
@@ -32,7 +33,7 @@ class ListScreen extends React.Component {
   }
 
   renderItems = () => {
-    const { items } = this.props;
+    const { items, navigation } = this.props;
     return items.map((item) => (
       <ListItem key={item.id}>
         <CheckBox
@@ -42,7 +43,14 @@ class ListScreen extends React.Component {
           checked={item.done === 1}
         />
         <Body>
-          <Text>{item.title}</Text>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('Edit', { item })
+            }}
+          >
+            <Text>{item.title}</Text>
+          </TouchableOpacity>
+
         </Body>
       </ListItem>
     ))
